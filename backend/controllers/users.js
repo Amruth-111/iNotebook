@@ -49,3 +49,38 @@ exports.userSignUp = async (req, res) => {
     res.status(500).json({ e: e.message });
   }
 };
+
+exports.userSignIn = async (req, res) => {
+  const errors = validationResult(req);
+  const { email, password } = req.body;
+
+  //if there error exists then catch that error and send the errors back
+  if (!errors.isEmpty()) {
+    return res.status(404).json({ errors: errors.array() });
+  }
+  try {
+    const user = await User.findOne({ email });
+    //check if user exists
+    if (!user) {
+      return res
+        .status(404)
+        .send("email does not exist signup or enter correct credentials");
+    }
+     //if user exists then compare password
+    const passwordHash = await bcrypt.compare(password,user.password);
+    if (!passwordHash) {
+      return res.status(404).send("enter corrct credentials");
+    }
+    const data = {
+      user: {
+        id: user.id,
+      },
+    };
+    //generated user authentication token
+    const authToken = jwt.sign(data, process.env.JWT_TOKEN);
+    res.json({ authToken });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ e: e.message });
+  }
+};
