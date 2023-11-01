@@ -1,5 +1,7 @@
 const User = require("../models/User");
-const bcrypt=require("bcryptjs")
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const { validationResult } = require("express-validator");
 
@@ -7,9 +9,10 @@ exports.userSignUp = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    const salt=await bcrypt.genSalt(10)
-
-    const secPass=await bcrypt.hash(password,salt)
+    //set the salt
+    const salt = await bcrypt.genSalt(10);
+    //encrypt the password
+    const secPass = await bcrypt.hash(password, salt);
 
     const errors = validationResult(req);
     //if there error exists then catch that error and send the errors back
@@ -32,7 +35,15 @@ exports.userSignUp = async (req, res) => {
     });
 
     const result = await user.save();
-    res.json({ user: result });
+
+    const data = {
+      user: {
+        id: user.id,
+      },
+    };
+    //generated user authentication token
+    const authToken = jwt.sign(data, process.env.JWT_TOKEN);
+    res.json({ authToken });
   } catch (e) {
     console.log(e);
     res.status(500).json({ e: e.message });

@@ -3,6 +3,7 @@ const app = express()
 const database=require('./db')
 const userRoute=require('./routes/auth')
 const notesRoute=require('./routes/notes')
+require("dotenv").config()
 
 app.use(express.json())
 
