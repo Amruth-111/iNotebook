@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const auth=require('../middleware/auth')
 require("dotenv").config();
 
 const { validationResult } = require("express-validator");
@@ -84,3 +85,16 @@ exports.userSignIn = async (req, res) => {
     res.status(500).json({ e: e.message });
   }
 };
+
+
+exports.getUser=async(req,res)=>{
+    try{
+        let userId=req.user.id
+        console.log(userId)
+        const user=await User.findById(userId)
+        res.send(user)
+    }catch(e){
+        console.log(e);
+        res.status(500).json({ e: e.message });
+    }
+}

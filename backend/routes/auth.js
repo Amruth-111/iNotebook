@@ -1,5 +1,6 @@
 const express=require('express')
 const router=express.Router()
+const auth=require('../middleware/auth')
 const {body,validationResult}=require('express-validator')
 
 const user=require('../controllers/users')
@@ -15,5 +16,7 @@ router.post('/login',[
     body('password','password should not be empty').exists(),
     body('email','enter a valid email').isEmail(),
 ],user.userSignIn)
+
+router.post('/getuser',auth.fetchUser,user.getUser)
 
 module.exports=router
