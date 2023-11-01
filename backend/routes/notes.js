@@ -10,6 +10,7 @@ router.post('/addnotes',[
     body('title','title should not be empty').exists(),
     body('description','description should be atleast 5 charecters').isLength(),
 ],auth.fetchUser,notes.addNotes)
-
+router.put('/updatenotes/:id',auth.fetchUser,notes.updateNotes)
+router.delete('/deletenotes/:id',auth.fetchUser,notes.deleteNotes)
 
 module.exports=router

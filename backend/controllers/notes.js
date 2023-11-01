@@ -40,3 +40,45 @@ exports.addNotes = async (req, res) => {
     res.status(500).json({ e: e.message });
   }
 };
+
+//function to update notes
+exports.updateNotes = async (req, res) => {
+    try {
+
+        const{title,description,tag}=req.body
+        let newNote={}
+        if(title){newNote.title=title}
+        if(description){newNote.description=description}
+        if(tag){newNote.tag=tag}
+        console.log(req.params.id)
+        let notes=await Notes.findById(req.params.id)
+        // console.log(notes)
+        if(!notes){return res.status(404).send("not found")}
+        if(notes.user.toString()!==req.user.id){return res.status(401).send('not authorised')}
+
+        notes=await Notes.findByIdAndUpdate(req.params.id,{$set:newNote},{new:true})
+        console.log(res)
+        res.status(200).json(notes)
+        
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({ e: e.message });
+    }
+  };
+
+//function to update notes
+exports.deleteNotes = async (req, res) => {
+    try {
+        console.log(req.params.id)
+        let notes=await Notes.findById(req.params.id)
+        // console.log(notes)
+        if(!notes){return res.status(404).send("not found")}
+        if(notes.user.toString()!==req.user.id){return res.status(401).send('not authorised')}
+        notes=await Notes.findByIdAndDelete(req.params.id)
+        console.log(res)
+        res.status(200).json(notes)
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({ e: e.message });
+    }
+  };
