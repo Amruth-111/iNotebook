@@ -2,7 +2,7 @@ const mongoose=require('mongoose')
 
 const {Schema} =require('mongoose')
 
-const noteSchema=new Schema({
+const notesSchema=new Schema({
     title:{
         type:String,
         required:true
