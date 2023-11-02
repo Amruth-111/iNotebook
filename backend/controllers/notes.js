@@ -13,7 +13,7 @@ exports.fetchAllNotes = async (req, res) => {
     res.send(notes);
   } catch (e) {
     console.log(e);
-    res.status(500).json({ e: e.message });
+    res.status(500).json({ e: e.message,message:"internal server error" });
   }
 };
 
@@ -37,7 +37,7 @@ exports.addNotes = async (req, res) => {
     res.json(notes);
   } catch (e) {
     console.log(e);
-    res.status(500).json({ e: e.message });
+    res.status(500).json({ e: e.message,message:"internal server error" });
   }
 };
 
@@ -62,7 +62,7 @@ exports.updateNotes = async (req, res) => {
         
     } catch (e) {
       console.log(e);
-      res.status(500).json({ e: e.message });
+      res.status(500).json({ e: e.message,message:"internal server error" });
     }
   };
 
@@ -75,10 +75,10 @@ exports.deleteNotes = async (req, res) => {
         if(!notes){return res.status(404).send("not found")}
         if(notes.user.toString()!==req.user.id){return res.status(401).send('not authorised')}
         notes=await Notes.findByIdAndDelete(req.params.id)
-        console.log(res)
-        res.status(200).json(notes)
+        // console.log(res)
+        res.status(200).json({notes:notes,msg:"note deleted successfully"})
     } catch (e) {
       console.log(e);
-      res.status(500).json({ e: e.message });
+      res.status(500).json({ e: e.message,message:"internal server error" });
     }
   };
