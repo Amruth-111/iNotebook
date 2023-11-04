@@ -5,16 +5,18 @@ import Addnote from "./Addnote";
 
 const Note = () => {
   let context = useContext(noteContext);
-  const { notes, getAllNotes } = context;
+  const { notes, getAllNotes,editNote } = context;
   useEffect(() => {
     getAllNotes();
     // eslint-disable-next-line
   }, []);
-  const[note,setNote]=useState({etitle:" ", edescription:" ",etag:"default "})
+  const[note,setNote]=useState({id:"",etitle:"", edescription:"",etag:""})
 
   const handleClick=(e)=>{
     console.log("updatging the note",note)
-    e.preventDefault()
+    // e.preventDefault()
+    console.log(note.id,note.etitle,note.edescription,note.etag)
+    editNote(note.id, note.etitle, note.edescription, note.etag)
   }
 
   const onChange=(e)=>{
@@ -22,8 +24,9 @@ const Note = () => {
   setNote({...note,[e.target.name]:e.target.value})
   }
   const ref = useRef(null);
+
   const updateNote = (currentNote) => {
-    setNote({etitle:currentNote.title,edescription:currentNote.description,etag:currentNote.tag})
+    setNote({id: currentNote._id, etitle: currentNote.title, edescription: currentNote.description, etag:currentNote.tag})
     console.log("ckjhjs");
   };
   return (
@@ -109,7 +112,7 @@ const Note = () => {
               >
                 Close
               </button>
-              <button type="button" onClick={handleClick}className="btn btn-primary">
+              <button type="button" data-bs-dismiss='modal' onClick={handleClick}className="btn btn-primary">
                 update notes
               </button>
             </div>
@@ -118,10 +121,9 @@ const Note = () => {
       </div>
       <div className="row">
         <h2>Read Note</h2>
+
         {notes.map((note) => {
-          return (
-            <NoteItem key={note._id} updateNote={updateNote} note={note} />
-          );
+          return <NoteItem key={note._id} updateNote={updateNote} note={note} /> 
         })}
       </div>
     </>
