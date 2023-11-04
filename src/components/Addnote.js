@@ -45,6 +45,18 @@ setNote({...note,[e.target.name]:e.target.value})
               onChange={onChange}
             />
           </div>
+
+          <div className="form-group">
+            <label htmlFor="tag">tag</label>
+            <input
+              type="text"
+              className="form-control my-2"
+              id="tag"
+              name="tag"
+              placeholder="Enter tag"
+              onChange={onChange}
+            />
+          </div>
          
           <button type="submit" onClick={handleClick} className="btn btn-primary">
             Add Note
