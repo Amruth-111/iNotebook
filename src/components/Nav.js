@@ -1,9 +1,17 @@
 
 import React, {useEffect}from 'react'
 
-import {Link,useLocation} from 'react-router-dom'
+import {Link,useLocation,useNavigate} from 'react-router-dom'
+
 
 export default function Nav() {
+  const navigate=useNavigate()
+  const handleLogout=()=>{
+
+      localStorage.removeItem('auth-token')
+      navigate('/')
+
+  }
   let location = useLocation();
 
   useEffect(() => {
@@ -20,15 +28,17 @@ export default function Nav() {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           <li className="nav-item">
-            <Link className={`nav-link ${location.pathname==='/'?"active":""}`} aria-current="page" to="/">Home</Link>
+            <Link className={`nav-link ${location.pathname==='/'?"active":""}`} aria-current="page" to="/home">Home</Link>
           </li>
           <li className="nav-item">
             <Link className={`nav-link ${location.pathname==='/about'?"active":""}`} to="/about">About</Link>
           </li>
         </ul>
       </div>
+      {!localStorage.getItem('auth-token')?<form className="d-flex">
       <Link to="/login" className="btn btn-primary mx-1" role="button" aria-pressed="true">login</Link>
-      <Link to="/signup" className="btn btn-primary mx-1" role="button" aria-pressed="true">signup</Link>
+      <Link to="/signup" className="btn btn-primary mx-1" role="button" aria-pressed="true">signup</Link></form>:<button onClick={handleLogout} className='btn-btn-primary'>logout</button>
+      }
     </div>
   </nav>
   )

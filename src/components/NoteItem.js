@@ -16,7 +16,7 @@ const NoteItem = (props) => {
           </p>
           <p>{note.tag}</p>
           <p>{note.date}</p>
-          <i className="fa-solid fa-trash-can " onClick={()=>delNote(note._id)}></i>
+          <i className="fa-solid fa-trash-can " onClick={()=>{delNote(note._id);props.showAlert("deleted successfully","success")}}></i>
           <i className="fa-regular fa-pen-to-square mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={()=>{updateNote(note)}}></i>
         </div>
       </div>
