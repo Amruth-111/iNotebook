@@ -8,7 +8,7 @@ const Note = () => {
   const { notes, getAllNotes,editNote } = context;
   useEffect(() => {
     getAllNotes();
-    // eslint-disable-next-line
+    // eslint-disable-next-line 
   }, []);
   const[note,setNote]=useState({id:"",etitle:"", edescription:"",etag:""})
 
@@ -85,6 +85,8 @@ const Note = () => {
               name="edescription"
               placeholder="Enter Description"
               onChange={onChange}
+              minLength={5}
+              required
             />
           </div>
 
@@ -98,6 +100,8 @@ const Note = () => {
               name="etag"
               placeholder="Enter tag"
               onChange={onChange}
+              minLength={5}
+              required
             />
           </div>
          
@@ -112,7 +116,7 @@ const Note = () => {
               >
                 Close
               </button>
-              <button type="button" data-bs-dismiss='modal' onClick={handleClick}className="btn btn-primary">
+              <button disabled={note.etitle.length<5 && note.edescription.length<5}type="button" data-bs-dismiss='modal' onClick={handleClick}className="btn btn-primary">
                 update notes
               </button>
             </div>
@@ -121,7 +125,9 @@ const Note = () => {
       </div>
       <div className="row">
         <h2>Read Note</h2>
-
+        <div className="container mx-2">
+          {notes.length===0 && 'No notes to display'}
+        </div>
         {notes.map((note) => {
           return <NoteItem key={note._id} updateNote={updateNote} note={note} /> 
         })}

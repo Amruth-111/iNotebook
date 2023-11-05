@@ -82,7 +82,7 @@ const NoteState=(props)=>{
         //logic to edit 
         // console.log(notes)
        
-        // let newNotes = JSON.parse(JSON.stringify(notes))
+        let newNotes = JSON.parse(JSON.stringify(notes))
         // console.log(newNotes)
         for (let index = 0; index <newNotes.length; index++) {
             const element =newNotes[index];
